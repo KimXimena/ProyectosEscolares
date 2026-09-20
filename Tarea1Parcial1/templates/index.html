@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Ticket de Turno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="background-shape shape-1"></div>
+    <div class="background-shape shape-2"></div>
+
+    <main class="page">
+        <section class="card">
+            <div class="card-header">
+                <div>
+                    <p class="eyebrow">Parcial 2 · Mockup frontend</p>
+                    <h1>Ticket de Turno</h1>
+                    <p class="subtitle">
+                        Sistema de registro para generación de turnos con validación de datos.
+                    </p>
+                </div>
+                <div class="badge-status">En línea</div>
+            </div>
+
+            <form id="formulario" novalidate>
+                <div class="grid">
+                    <div class="field full">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" placeholder="Ej. Juan Pérez López">
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="curp">CURP</label>
+                        <input type="text" id="curp" maxlength="18" placeholder="ABCD010203HCLRRN09">
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="correo">Correo electrónico</label>
+                        <input type="email" id="correo" placeholder="ejemplo@correo.com">
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" id="telefono" maxlength="10" placeholder="8441234567">
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="celular">Celular</label>
+                        <input type="text" id="celular" maxlength="10" placeholder="8449876543">
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="nivel">Nivel educativo</label>
+                        <select id="nivel">
+                            <option value="">Seleccione un nivel</option>
+                            {% for nivel in niveles %}
+                                <option value="{{ nivel }}">{{ nivel }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="municipio">Municipio</label>
+                        <select id="municipio">
+                            <option value="">Seleccione un municipio</option>
+                            {% for municipio in municipios %}
+                                <option value="{{ municipio }}">{{ municipio }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="error-text"></small>
+                    </div>
+
+                    <div class="field">
+                        <label for="asunto">Asunto</label>
+                        <select id="asunto">
+                            <option value="">Seleccione un asunto</option>
+                            {% for asunto in asuntos %}
+                                <option value="{{ asunto }}">{{ asunto }}</option>
+                            {% endfor %}
+                        </select>
+                        <small class="error-text"></small>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" id="btnGenerar">
+                        Generar turno
+                    </button>
+                    <button type="button" class="secondary" id="btnLimpiar">
+                        Limpiar formulario
+                    </button>
+                </div>
+            </form>
+
+            <div id="alerta"></div>
+
+            <section id="resultado" class="ticket hidden">
+                <div class="ticket-top">
+                    <div>
+                        <p class="ticket-label">Comprobante de turno</p>
+                        <h2 id="ticketTurno">---</h2>
+                    </div>
+                    <div class="ticket-logo">TT</div>
+                </div>
+
+                <div class="ticket-grid">
+                    <div>
+                        <span>Folio</span>
+                        <strong id="ticketFolio">---</strong>
+                    </div>
+                    <div>
+                        <span>Fecha</span>
+                        <strong id="ticketFecha">---</strong>
+                    </div>
+                    <div>
+                        <span>Hora</span>
+                        <strong id="ticketHora">---</strong>
+                    </div>
+                    <div>
+                        <span>Oficina</span>
+                        <strong id="ticketOficina">---</strong>
+                    </div>
+                    <div>
+                        <span>Solicitante</span>
+                        <strong id="ticketNombre">---</strong>
+                    </div>
+                    <div>
+                        <span>Municipio</span>
+                        <strong id="ticketMunicipio">---</strong>
+                    </div>
+                    <div>
+                        <span>Nivel</span>
+                        <strong id="ticketNivel">---</strong>
+                    </div>
+                    <div>
+                        <span>Asunto</span>
+                        <strong id="ticketAsunto">---</strong>
+                    </div>
+                </div>
+
+                <p class="ticket-note">
+                    Presenta este comprobante al momento de acudir a la oficina correspondiente.
+                </p>
+            </section>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/validaciones.js') }}"></script>
+</body>
+</html>

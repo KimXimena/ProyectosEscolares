@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Pensión Alimenticia y Juicio Mercantil</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    header {
+      background: #111827;
+      color: #f9fafb;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    header span {
+      font-size: .85rem;
+      opacity: .8;
+    }
+
+    main {
+      min-height: calc(100vh - 64px);
+      padding: 1.5rem 2rem 2.5rem;
+    }
+
+    .breadcrumbs {
+      font-size: .8rem;
+      color: #6b7280;
+      margin-bottom: .5rem;
+    }
+
+    .view-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .view-title h2 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .tag {
+      font-size: .75rem;
+      padding: .15rem .55rem;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 900px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: .75rem;
+      padding: 1rem 1.25rem 1.25rem;
+      box-shadow: 0 10px 25px rgba(15,23,42,.06);
+      border: 1px solid #e5e7eb;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    .card p.helper {
+      margin: 0 0 .75rem;
+      font-size: .8rem;
+      color: #6b7280;
+    }
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0 0 .75rem;
+    }
+
+    .field {
+      margin-bottom: .65rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 500;
+      margin-bottom: .15rem;
+    }
+
+    .field small {
+      display: block;
+      font-size: .7rem;
+      color: #6b7280;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      border-radius: .5rem;
+      border: 1px solid #d1d5db;
+      padding: .4rem .5rem;
+      font-size: .85rem;
+      font-family: inherit;
+      background: #f9fafb;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      font-size: .85rem;
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .35rem;
+      margin-top: .5rem;
+    }
+
+    .pill {
+      font-size: .72rem;
+      padding: .1rem .6rem;
+      border-radius: 999px;
+      background: #f3f4f6;
+      border: 1px dashed #d1d5db;
+      color: #4b5563;
+    }
+
+    .actions {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: .5rem;
+    }
+
+    .btn {
+      border-radius: .5rem;
+      border: none;
+      padding: .45rem .9rem;
+      font-size: .85rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: #fbbf24;
+      color: #111827;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Sistema de Pensión Alimenticia y Juicio Mercantil</h1>
+  <span>Diseño de interfaz · Prototipo HTML</span>
+</header>
+
+<main>
+  <div class="breadcrumbs">Inicio / Módulo único</div>
+
+  <div class="view-title">
+    <h2 id="tituloPrincipal">Registro de Alta</h2>
+    <span class="tag" id="etiquetaMovimiento">Movimiento seleccionado: Alta</span>
+  </div>
+
+  <!-- Selector de tipo de movimiento -->
+  <div class="card">
+    <h3>Seleccionar tipo de movimiento</h3>
+    <p class="helper" id="textoMovimientoIntro">
+      Elija el movimiento que desea registrar. El formulario aplica para Alta de pensión alimenticia
+      o juicio mercantil.
+    </p>
+    <div class="field">
+      <label for="tipoMovimiento">Tipo de movimiento</label>
+      <select id="tipoMovimiento">
+        <option value="alta">Proceso A · Alta</option>
+        <option value="cambio">Proceso B · Cambio</option>
+        <option value="baja">Proceso C · Baja</option>
+        <option value="reintegro">Proceso D · Reintegro</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ========= CONTENEDOR 1: DATOS DEL OFICIO ========= -->
+  <div class="card">
+    <h3>1. Datos del oficio</h3>
+    <p class="helper" id="textoOficio">
+      Información del oficio recibido del Juzgado para el movimiento de <strong>Alta</strong>.
+      Aquí se define si el trámite es pensión alimenticia o juicio mercantil.
+    </p>
+
+    <fieldset class="grid grid-2">
+      <div class="field">
+        <label>Tipo de trámite</label>
+        <select id="tipoTramite">
+          <option value="">Selecciona...</option>
+          <option value="pension">Pensión alimenticia</option>
+          <option value="juicio">Juicio mercantil</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Cargar archivo del oficio</label>
+        <input type="file" accept=".pdf,image/*">
+        <small>Subir escaneo del oficio en PDF o imagen.</small>
+      </div>
+    </fieldset>
+
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field">
+          <label>Número de oficio</label>
+          <input type="text" placeholder="Ej. 1234/2025">
+        </div>
+        <div class="field">
+          <label>Fecha del oficio</label>
+          <input type="date">
+        </div>
+        <div class="field">
+          <label>Fecha de recibido</label>
+          <input type="date">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="field">
+          <label>Número de expediente en el juzgado</label>
+          <input type="text">
+        </div>
+        <div class="field">
+          <label>Juzgado</label>
+          <input type="text" placeholder="Ej. Juzgado Familiar 1º de Saltillo">
+        </div>
+        <div class="field">
+          <label>Municipio de pago</label>
+          <input type="text">
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <!-- ========= CONTENEDOR 2: DATOS DEL BENEFICIARIO ========= -->
+  <div class="card">
+    <h3>2. Datos del beneficiario</h3>
+    <p class="helper" id="textoBeneficiario">
+      Información de la persona que recibirá la pensión (o del abogado en caso de juicio mercantil)
+      para el movimiento de <strong>Alta</strong>.
+    </p>
+
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field">
+          <label>Nombre del beneficiario</label>
+          <input type="text" placeholder="Ap. paterno Ap. materno Nombre(s)">
+        </div>
+        <div class="field">
+          <label>RFC del beneficiario</label>
+          <input type="text">
+        </div>
+        <div class="field">
+          <label>Porcentaje a descontar</label>
+          <input type="number" step="0.01" placeholder="Ej. 20">
+          <small>Si el descuento es por porcentaje, capturar aquí.</small>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="field">
+          <label>Tipo de descuento</label>
+          <select>
+            <option value="">Selecciona...</option>
+            <option>Porcentaje (Pensión)</option>
+            <option>Importe fijo (Pensión)</option>
+            <option>Juicio Mercantil (M)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Nombre del abogado</label>
+          <input type="text" placeholder="Nombre completo del abogado (si aplica)">
+        </div>
+        <div class="field">
+          <label>Celular del abogado</label>
+          <input type="text" placeholder="Celular del abogado (si aplica)">
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="field">
+      <label>Celular del beneficiario</label>
+      <input type="text" placeholder="Teléfono de contacto del beneficiario">
+    </div>
+  </div>
+
+  <!-- ========= CONTENEDOR 3: DATOS DEL TRABAJADOR ========= -->
+  <div class="card">
+    <h3>3. Datos del trabajador</h3>
+    <p class="helper" id="textoTrabajador">
+      Datos del trabajador en nómina sobre el cual se aplicará el descuento en el movimiento de
+      <strong>Alta</strong>.
+    </p>
+
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field">
+          <label>RFC del trabajador</label>
+          <input type="text" placeholder="RFC del trabajador">
+        </div>
+        <div class="field">
+          <label>CURP del trabajador</label>
+          <input type="text" placeholder="CURP del trabajador">
+        </div>
+        <div class="field">
+          <label>Nombre del trabajador</label>
+          <input type="text" placeholder="Nombre completo del trabajador">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="field">
+          <label>Sostenimiento</label>
+          <div style="display:flex; flex-direction:column; gap:4px; margin-top:4px;">
+            <label style="display:flex; align-items:center; gap:6px;">
+              <input type="checkbox" name="sostenimiento" value="federal">
+              Federal
+            </label>
+            <label style="display:flex; align-items:center; gap:6px;">
+              <input type="checkbox" name="sostenimiento" value="estatal">
+              Estatal
+            </label>
+            <label style="display:flex; align-items:center; gap:6px;">
+              <input type="checkbox" name="sostenimiento" value="burocrata">
+              Burocrata
+            </label>
+          </div>
+          <small>Puedes seleccionar uno o varios tipos de sostenimiento.</small>
+        </div>
+
+        <div class="field">
+          <label>Centro de trabajo</label>
+          <input type="text" placeholder="Clave o nombre del centro de trabajo">
+        </div>
+
+        <div class="field">
+          <label>Realizar cálculo automático</label>
+          <button class="btn btn-primary" type="button" style="width:100%;">Calcular monto a descontar</button>
+          <small>El sistema obtiene percepciones, deducciones de ley y calcula el monto de descuento.</small>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <!-- ========= CÁLCULO ESPECÍFICO JUICIO MERCANTIL ========= -->
+  <div class="card" id="juicio-mercantil-card" style="display:none;">
+    <h3>3.5. Cálculo específico: Juicio Mercantil</h3>
+    <p class="helper">
+      Este cálculo aplica únicamente si el <strong>Tipo de trámite</strong> es Juicio Mercantil.
+      Fórmula: (Total de Percepciones – Descuentos de ley – Salario Mínimo) × 30%.
+    </p>
+
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field">
+          <label>Total de Percepciones</label>
+          <input type="number" step="0.01" placeholder="Monto">
+        </div>
+        <div class="field">
+          <label>Descuentos de ley</label>
+          <input type="number" step="0.01" placeholder="Monto">
+        </div>
+        <div class="field">
+          <label>Salario Mínimo (Referencia)</label>
+          <input type="number" step="0.01" placeholder="Monto">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="field">
+          <label>Cantidad total del adeudo</label>
+          <input type="number" step="0.01" placeholder="Total a pagar">
+        </div>
+        <div class="field">
+          <label>Cantidad a descontar por quincena</label>
+          <input type="number" step="0.01" placeholder="Resultado del cálculo">
+          <small>(Percepciones – Descuentos de ley – SM) × 30%</small>
+        </div>
+        <div class="field">
+          <label>Número de quincenas estimadas</label>
+          <input type="number" min="1">
+          <small>Total de adeudo / Cantidad por quincena.</small>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="field">
+      <label>Detalle de descuento (Concepto 66)</label>
+      <textarea placeholder="El descuento se aplica con el concepto 66 en sostenimiento Federal y Estatal."></textarea>
+    </div>
+  </div>
+
+  <!-- ========= CONTENEDOR 4: REGISTRO EN SIAPSEP ========= -->
+  <div class="card">
+    <h3>4. Registro en SIAPSEP</h3>
+    <p class="helper" id="textoSiapsep">
+      Primero se verifica si el trabajador ya cuenta con registro en SIAPSEP. Si no existe,
+      se capturan los datos para un nuevo registro. Este paso se ajusta al movimiento de
+      <strong>Alta</strong>, <strong>Cambio</strong>, <strong>Baja</strong> o <strong>Reintegro</strong>.
+    </p>
+
+    <fieldset class="grid grid-2">
+      <div class="field">
+        <label>Buscar en SIAPSEP por RFC o nombre</label>
+        <input type="text" placeholder="Ej. LOPE800101ABC o Juan Pérez">
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button type="button" class="btn btn-primary" style="width:100%;">Buscar en SIAPSEP</button>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label>Resultado de la búsqueda</label>
+      <textarea placeholder="Aquí se mostrará la información encontrada en SIAPSEP (solo lectura)" disabled></textarea>
+      <small>Para pensión: Forma P o C. Para Juicio Mercantil: Forma M.</small>
+    </div>
+
+    <hr style="margin:1rem 0; border:none; border-top:1px solid #e5e7eb;">
+
+    <p class="helper">
+      Si el trabajador no tiene registro previo, capture los datos base para darlo de alta en SIAPSEP.
+    </p>
+
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field">
+          <label>RFC beneficiario (formato SIAPSEP)</label>
+          <input type="text" placeholder="RFC según reglas de SIAPSEP">
+        </div>
+        <div class="field">
+          <label>Número de beneficiario</label>
+          <input type="number" min="1" placeholder="Consecutivo de beneficiarios del trabajador">
+        </div>
+        <div class="field">
+          <label>Centro de trabajo (SIAPSEP)</label>
+          <input type="text" placeholder="Clave de centro de trabajo">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="field">
+          <label>Vigencia</label>
+          <input type="text" placeholder="Quincena desde / hasta (999999 si es indefinida)">
+        </div>
+        <div class="field">
+          <label>Folio / referencia de digitalización</label>
+          <input type="text" placeholder="Folio del oficio digitalizado">
+        </div>
+        <div class="field">
+          <label>Notas internas (SIAPSEP)</label>
+          <textarea placeholder="Comentarios o referencias internas"></textarea>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="button">Guardar movimiento</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  const tipoMovimientoSelect = document.getElementById('tipoMovimiento');
+  const etiquetaMovimiento = document.getElementById('etiquetaMovimiento');
+  const tituloPrincipal    = document.getElementById('tituloPrincipal');
+  const textoMovimientoIntro = document.getElementById('textoMovimientoIntro');
+  const textoOficio        = document.getElementById('textoOficio');
+  const textoBeneficiario  = document.getElementById('textoBeneficiario');
+  const textoTrabajador    = document.getElementById('textoTrabajador');
+  const textoSiapsep       = document.getElementById('textoSiapsep');
+
+  function actualizarMovimiento() {
+    const valor = tipoMovimientoSelect.value;
+    let nombre = 'Alta';
+    let detalleIntro = '';
+    switch (valor) {
+      case 'alta':
+        nombre = 'Alta';
+        detalleIntro = 'Dar de alta una nueva pensión alimenticia o un nuevo juicio mercantil.';
+        break;
+      case 'cambio':
+        nombre = 'Cambio';
+        detalleIntro = 'Modificar porcentaje, importe fijo, centro de pago u otros datos de una pensión o juicio mercantil.';
+        break;
+      case 'baja':
+        nombre = 'Baja';
+        detalleIntro = 'Cerrar los efectos de la pensión o juicio mercantil por oficio de baja.';
+        break;
+      case 'reintegro':
+        nombre = 'Reintegro';
+        detalleIntro = 'Registrar el reintegro de cantidades retenidas al trabajador según oficio.';
+        break;
+    }
+
+    etiquetaMovimiento.textContent = 'Movimiento seleccionado: ' + nombre;
+    tituloPrincipal.textContent    = 'Registro de ' + nombre;
+    textoMovimientoIntro.textContent =
+      'Elija el movimiento que desea registrar. Actualmente está trabajando con: ' +
+      nombre + '. ' + detalleIntro;
+
+    textoOficio.innerHTML =
+      'Información del oficio recibido del Juzgado para el movimiento de <strong>' +
+      nombre +
+      '</strong>. Aquí se define si el trámite es pensión alimenticia o juicio mercantil.';
+
+    textoBeneficiario.innerHTML =
+      'Información de la persona que recibirá la pensión (o del abogado en caso de juicio mercantil) ' +
+      'para el movimiento de <strong>' + nombre + '</strong>.';
+
+    textoTrabajador.innerHTML =
+      'Datos del trabajador en nómina sobre el cual se aplicará el descuento en el movimiento de ' +
+      '<strong>' + nombre + '</strong>.';
+
+    textoSiapsep.innerHTML =
+      'Primero se verifica si el trabajador ya cuenta con registro en SIAPSEP. Si no existe, se capturan los datos ' +
+      'para un nuevo registro. Este paso se ajusta al movimiento de <strong>Alta</strong>, ' +
+      '<strong>Cambio</strong>, <strong>Baja</strong> o <strong>Reintegro</strong>. ' +
+      'Actualmente está capturando un movimiento de <strong>' + nombre + '</strong>.';
+  }
+
+  tipoMovimientoSelect.addEventListener('change', actualizarMovimiento);
+  actualizarMovimiento(); // inicial
+
+  // Mostrar / ocultar cálculo de Juicio Mercantil según tipo de trámite
+  const tipoTramiteSelect = document.getElementById('tipoTramite');
+  const juicioCard = document.getElementById('juicio-mercantil-card');
+
+  if (tipoTramiteSelect && juicioCard) {
+    tipoTramiteSelect.addEventListener('change', () => {
+      if (tipoTramiteSelect.value === 'juicio') {
+        juicioCard.style.display = 'block';
+      } else {
+        juicioCard.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Pensión Alimenticia y Juicio Mercantil - Módulo Dinámico Único</title>
+  <style>
+    /* Estilos CSS (Se mantienen sin cambios) */
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f3f4f6; color: #111827; }
+    header { background: #111827; color: #f9fafb; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    header h1 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+    header span { font-size: .85rem; opacity: .8; }
+    main { min-height: calc(100vh - 64px); padding: 1.5rem 2rem 2.5rem; }
+    .breadcrumbs { font-size: .8rem; color: #6b7280; margin-bottom: .5rem; }
+    .view-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: .5rem; }
+    .view-title h2 { margin: 0; font-size: 1.3rem; }
+    .tag { font-size: .75rem; padding: .15rem .55rem; border-radius: 999px; background: #dbeafe; color: #1d4ed8; }
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 900px) { .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .card { background: #ffffff; border-radius: .75rem; padding: 1rem 1.25rem 1.25rem; box-shadow: 0 10px 25px rgba(15,23,42,.06); border: 1px solid #e5e7eb; margin-bottom: 1rem; }
+    .card h3 { margin-top: 0; font-size: 1rem; margin-bottom: .5rem; }
+    .card p.helper { margin: 0 0 .75rem; font-size: .8rem; color: #6b7280; }
+    fieldset { border: none; padding: 0; margin: 0 0 .75rem; }
+    .field { margin-bottom: .65rem; }
+    .field label { display: block; font-size: .8rem; font-weight: 500; margin-bottom: .15rem; }
+    .field small { display: block; font-size: .7rem; color: #6b7280; }
+    input[type="text"], input[type="date"], input[type="number"], select, textarea { width: 100%; border-radius: .5rem; border: 1px solid #d1d5db; padding: .4rem .5rem; font-size: .85rem; font-family: inherit; background: #f9fafb; }
+    input[type="file"] { width: 100%; font-size: .85rem; }
+    textarea { min-height: 70px; resize: vertical; }
+    .actions { margin-top: 1rem; display: flex; justify-content: flex-end; gap: .5rem; }
+    .btn { border-radius: .5rem; border: none; padding: .45rem .9rem; font-size: .85rem; cursor: pointer; font-weight: 500; font-family: inherit; }
+    .btn-primary { background: #fbbf24; color: #111827; }
+
+    /* Clase para ocultar los detalles de los procesos no seleccionados */
+    .proceso-detalle:not(.active) {
+        display: none;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Sistema de Pensión Alimenticia y Juicio Mercantil</h1>
+  <span>Diseño de interfaz · Módulo Dinámico Único</span>
+</header>
+
+<main>
+  <div class="breadcrumbs">Inicio / Módulo único</div>
+
+  <div class="card">
+    <div class="view-title" style="margin-bottom: 1rem; border-bottom: none;">
+        <h2 id="tituloPrincipal">Registro de Alta de Pensión / Juicio Mercantil</h2>
+        <span class="tag" id="tagMovimiento">Movimiento seleccionado: Alta</span>
+    </div>
+    
+    <hr style="margin-bottom:1rem; border:none; border-top:1px solid #e5e7eb;">
+
+    <h3>Seleccionar tipo de movimiento</h3>
+    <p class="helper">
+      Elija el movimiento que desea registrar. El título y la sección de **Detalles Específicos** cambiarán, pero el resto del formulario se mantendrá.
+    </p>
+    <div class="field">
+      <label for="tipoMovimiento">Tipo de movimiento</label>
+      <select id="tipoMovimiento">
+        <option value="alta">Proceso A · Alta</option>
+        <option value="cambio">Proceso B · Cambio</option>
+        <option value="baja">Proceso C · Baja</option>
+        <option value="reintegro">Proceso D · Reintegro</option>
+      </select>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h3>1. Datos del oficio</h3>
+    <p class="helper">
+      Información del oficio recibido del Juzgado.
+    </p>
+
+    <fieldset class="grid grid-2">
+      <div class="field">
+        <label>Tipo de trámite</label>
+        <select id="tipoTramiteGeneral">
+          <option value="pension">Pensión alimenticia</option>
+          <option value="juicio">Juicio mercantil</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Cargar archivo del oficio</label>
+        <input type="file" accept=".pdf,image/*">
+        <small>Subir escaneo del oficio en PDF o imagen.</small>
+      </div>
+    </fieldset>
+    
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field"><label>Número de oficio</label><input type="text" placeholder="Ej. 1234/2025"></div>
+        <div class="field"><label>Fecha del oficio</label><input type="date"></div>
+        <div class="field"><label>Fecha de recibido</label><input type="date"></div>
+      </fieldset>
+      <fieldset>
+        <div class="field"><label>Número de expediente</label><input type="text"></div>
+        <div class="field"><label>Juzgado</label><input type="text" placeholder="Ej. Juzgado Familiar 1º"></div>
+        <div class="field"><label>Municipio de pago</label><input type="text"></div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2. Datos del beneficiario</h3>
+    <p class="helper">Información de la persona que recibe o es afectada por la pensión/juicio.</p>
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field"><label>Nombre del beneficiario</label><input type="text" placeholder="Ap. paterno Ap. materno Nombre(s)"></div>
+        <div class="field"><label>RFC del beneficiario</label><input type="text"></div>
+        <div class="field" id="campoPorcentajeGeneral"><label>Porcentaje/Importe a descontar</label><input type="text" placeholder="Ej. 20% o $5,000.00"><small>Se usa para Alta/Cambio. Capturar porcentaje o monto.</small></div>
+      </fieldset>
+      <fieldset>
+        <div class="field">
+          <label>Tipo de descuento</label>
+          <select><option value="P">Porcentaje (Pensión)</option><option value="C">Importe fijo (Pensión)</option><option value="M">Juicio Mercantil (M)</option></select>
+        </div>
+        <div class="field"><label>Nombre del abogado</label><input type="text" placeholder="Nombre completo del abogado (si aplica)"></div>
+        <div class="field"><label>Celular del abogado</label><input type="text" placeholder="Celular del abogado (si aplica)"></div>
+      </fieldset>
+    </div>
+    <div class="field"><label>Celular del beneficiario</label><input type="text" placeholder="Teléfono de contacto del beneficiario"></div>
+  </div>
+
+  <div class="card">
+    <h3>3. Datos del trabajador</h3>
+    <p class="helper">Datos del trabajador en nómina sobre el cual se aplicará el movimiento.</p>
+    <div class="grid grid-2">
+      <fieldset>
+        <div class="field"><label>RFC del trabajador</label><input type="text" placeholder="RFC del trabajador"></div>
+        <div class="field"><label>CURP del trabajador</label><input type="text" placeholder="CURP del trabajador"></div>
+        <div class="field"><label>Nombre del trabajador</label><input type="text" placeholder="Nombre completo del trabajador"></div>
+      </fieldset>
+      <fieldset>
+        <div class="field">
+          <label>Sostenimiento</label>
+          <div style="display:flex; flex-direction:column; gap:4px; margin-top:4px;">
+            <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sostenimiento_general" value="federal">Federal</label>
+            <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sostenimiento_general" value="estatal">Estatal</label>
+            <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" name="sostenimiento_general" value="burocrata">Burocrata</label>
+          </div>
+        </div>
+        <div class="field"><label>Centro de trabajo</label><input type="text" placeholder="Clave o nombre del centro de trabajo"></div>
+        <div class="field"><label>Realizar cálculo automático</label><button class="btn btn-primary" type="button" style="width:100%;">Buscar en Nómina</button></div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 id="tituloDetallesEspecificos">3.1. Detalles Específicos del Proceso A: Alta</h3>
+
+    <div id="alta-details" class="proceso-detalle active">
+        
+        <div id="card-retroactivo-alta-specific">
+          <h4>Cálculo de Retroactivo (Solo Alta de Pensión)</h4>
+          <p class="helper">
+            Fórmula: (Total de Percepciones – Deducciones de Ley (Conceptos 01,02,04,58,77) * Porcentaje) * 2.
+          </p>
+          <div class="grid grid-2">
+            <fieldset>
+              <div class="field"><label>Total de Percepciones</label><input type="number" step="0.01" placeholder="Monto"></div>
+              <div class="field"><label>Deducciones de Ley (01,02,04,58,77)</label><input type="number" step="0.01" placeholder="Monto"></div>
+            </fieldset>
+            <fieldset>
+              <div class="field"><label>Monto Total Retroactivo</label><input type="number" step="0.01" placeholder="Monto mensual SIAPSEP" disabled></div>
+            </fieldset>
+          </div>
+          <div class="field">
+              <label>Periodo de Retroactivo</label>
+              <input type="text" placeholder="Quincena Desde / Hasta"><small>De la quincena de recibido y la anterior de captura.</small>
+          </div>
+        </div>
+
+        <div id="juicio-mercantil-card-specific" style="display:none;">
+          <hr style="margin:1rem 0; border:none; border-top:1px solid #e5e7eb;">
+          <h4>Cálculo específico: Juicio Mercantil</h4>
+          <p class="helper">
+            Fórmula: (Total de Percepciones – Descuentos de ley – Salario Mínimo) × 30%.
+          </p>
+          <div class="grid grid-2">
+            <fieldset>
+              <div class="field"><label>Percepciones - Descuentos de ley</label><input type="number" step="0.01" placeholder="Monto"></div>
+              <div class="field"><label>Salario Mínimo (Referencia)</label><input type="number" step="0.01" placeholder="Monto"></div>
+              <div class="field"><label>Cantidad a descontar por quincena (30%)</label><input type="number" step="0.01" placeholder="Resultado del cálculo"></div>
+            </fieldset>
+            <fieldset>
+              <div class="field"><label>Cantidad total del adeudo</label><input type="number" step="0.01" placeholder="Total a pagar"></div>
+              <div class="field"><label>Número de quincenas estimadas</label><input type="number" min="1" disabled><small>Total de adeudo / Cantidad por quincena.</small></div>
+            </fieldset>
+          </div>
+        </div>
+    </div>
+
+    <div id="cambio-details" class="proceso-detalle">
+        <p class="helper">
+            Se debe cerrar el registro anterior en SIAPSEP y capturar un nuevo registro con el cambio solicitado (Porcentaje, Monto o Centro de Trabajo).
+        </p>
+
+        <fieldset class="grid grid-2">
+            <div class="field">
+            <label>Registro de pensión o juicio mercantil a modificar</label>
+            <select><option>Selecciona un registro activo...</option><option>Beneficiario A (20%)</option></select>
+            <small>Buscar el registro activo del beneficiario en SIAPSEP.</small>
+            </div>
+            <div class="field">
+            <label>Fecha de cierre de efectos del registro anterior</label>
+            <input type="date">
+            <small>Se cierran efectos del registro anterior en SIAPSEP.</small>
+            </div>
+        </fieldset>
+
+        <hr style="margin:1rem 0; border:none; border-top:1px solid #e5e7eb;">
+
+        <h4>Nuevo Registro (con el cambio)</h4>
+        <div class="grid grid-2">
+            <fieldset>
+            <div class="field"><label>Nuevo Porcentaje o Importe Fijo</label><input type="text" placeholder="Ej. 25% o $5,000.00"></div>
+            <div class="field"><label>Nuevo Centro de Trabajo (si aplica)</label><input type="text" placeholder="Clave del nuevo CT"></div>
+            </fieldset>
+            <fieldset>
+            <div class="field"><label>Actualizar Consecutivo RFC (Beneficiario)</label><input type="text" placeholder="Se actualiza el consecutivo del RFC del beneficiario"></div>
+            <div class="field"><label>Número de documento de Alta (Bitácora)</label><input type="text" placeholder="Consecutivo de la bitácora de control de cambios"></div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div id="baja-details" class="proceso-detalle">
+        <p class="helper">
+            Se debe buscar el registro y aplicar la fecha de cierre de efectos para dar de baja la pensión/juicio mercantil.
+        </p>
+        <fieldset class="grid grid-2">
+            <div class="field">
+            <label>Registro de pensión o juicio mercantil a dar de baja</label>
+            <select><option>Selecciona un registro activo...</option><option>Beneficiario A (20%)</option></select>
+            <small>Buscar el registro activo del beneficiario en SIAPSEP.</small>
+            </div>
+            <div class="field">
+            <label>Fecha de cierre de efectos</label>
+            <input type="date">
+            </div>
+        </fieldset>
+
+        <div class="field">
+            <label>Notas / Verificación</label>
+            <textarea placeholder="Comprobar si existe movimiento que cause baja definitiva del trabajador (Actualmente no se notifica)"></textarea>
+        </div>
+    </div>
+
+    <div id="reintegro-details" class="proceso-detalle">
+        <p class="helper">Registrar el reintegro de cantidades retenidas al trabajador.</p>
+
+        <fieldset class="grid grid-2">
+            <div class="field">
+            <label>Sostenimiento del trabajador</label>
+            <select id="sostenimientoReintegro">
+                <option value="federal">Federal</option>
+                <option value="estatal">Estatal</option>
+            </select>
+            </div>
+            <div class="field">
+            <label>Monto Total a Reintegrar</label>
+            <input type="number" step="0.01" placeholder="Monto mensual a reintegrar">
+            </div>
+        </fieldset>
+
+        <div id="reintegro-federal-detalle-specific">
+            <h4>Reintegro Federal</h4>
+            <p class="helper">La Dirección de Pagos retiene el pago y solicita la emisión al trabajador.</p>
+            <div class="field">
+            <label>Referencia de solicitud de emisión de pago</label>
+            <input type="text" placeholder="Folio o referencia de la solicitud a Dirección de Pagos">
+            </div>
+        </div>
+
+        <div id="reintegro-estatal-detalle-specific" style="display:none;">
+            <h4>Reintegro Estatal</h4>
+            <p class="helper">Se obtiene el monto del **concepto 62** de nómina y se captura en nómina en **concepto 75**.</p>
+            <div class="grid grid-2">
+            <div class="field"><label>Monto Concepto 62 (Nómina)</label><input type="number" step="0.01" placeholder="Monto obtenido"></div>
+            <div class="field"><label>Monto Capturado (Concepto 75)</label><input type="number" step="0.01" placeholder="Monto mensual capturado"></div>
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Consecutivo en Bitácora de Control de Cambios</label>
+            <input type="text" placeholder="Registrar consecutivo">
+        </div>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+    <h3>4. Registro en SIAPSEP</h3>
+    <p class="helper">
+      Se utiliza la funcionalidad de búsqueda en SIAPSEP para verificar el registro y aplicar los cambios.
+    </p>
+    <fieldset class="grid grid-2">
+      <div class="field"><label>Buscar en SIAPSEP por RFC o nombre</label><input type="text"></div>
+      <div class="field"><label>&nbsp;</label><button type="button" class="btn btn-primary" style="width:100%;">Buscar en SIAPSEP</button></div>
+    </fieldset>
+
+    <hr style="margin:1rem 0; border:none; border-top:1px solid #e5e7eb;">
+
+    <div id="siapsep-alta-cambio-capture">
+        <h4>Captura de Nuevo Registro (Solo Alta y Cambio)</h4>
+        <p class="helper">Datos a registrar para una **Alta** o **Nuevo Registro por Cambio**.</p>
+        <div class="grid grid-2">
+          <fieldset>
+            <div class="field"><label>RFC beneficiario (formato SIAPSEP)</label><input type="text" placeholder="RFC según reglas de SIAPSEP"></div>
+            <div class="field"><label>Número de beneficiario</label><input type="number" min="1" placeholder="Consecutivo"></div>
+            <div class="field"><label>Centro de trabajo (SIAPSEP)</label><input type="text" placeholder="Clave de centro de trabajo"></div>
+          </fieldset>
+          <fieldset>
+            <div class="field"><label>Vigencia (Desde / Hasta)</label><input type="text" placeholder="Quincena desde / hasta (999999 si es indefinida)"></div>
+            <div class="field"><label>Folio / referencia de digitalización</label><input type="text" placeholder="Número de oficio del juzgado"></div>
+            <div class="field"><label>Notas internas (SIAPSEP)</label><textarea placeholder="Comentarios o referencias internas"></textarea></div>
+          </fieldset>
+        </div>
+    </div>
+    
+    <div id="siapsep-baja-reintegro-note" style="display:none;">
+        <p class="helper">
+            **Nota:** Para Baja y Reintegro, el registro en SIAPSEP se limita al cierre de efectos (Baja) o registro en bitácora (Reintegro). No se requiere captura de nuevo registro en este apartado.
+        </p>
+    </div>
+
+    <div class="actions"><button class="btn btn-primary" type="button">Guardar movimiento y Digitalizar Oficios</button></div>
+  </div>
+
+</main>
+
+<script>
+  const tipoMovimientoSelect = document.getElementById('tipoMovimiento');
+  const tituloPrincipal = document.getElementById('tituloPrincipal');
+  const tagMovimiento = document.getElementById('tagMovimiento');
+  const tituloDetallesEspecificos = document.getElementById('tituloDetallesEspecificos');
+  const detalleCards = document.querySelectorAll('.proceso-detalle');
+
+  // Detalle Alta (Sub-Condicionales)
+  const tipoTramiteGeneral = document.getElementById('tipoTramiteGeneral');
+  const juicioMercantilCardSpecific = document.getElementById('juicio-mercantil-card-specific');
+  const cardRetroactivoAltaSpecific = document.getElementById('card-retroactivo-alta-specific');
+  const campoPorcentajeGeneral = document.getElementById('campoPorcentajeGeneral');
+  
+  // Detalle Reintegro (Sub-Condicionales)
+  const sostenimientoReintegro = document.getElementById('sostenimientoReintegro');
+  const reintegroFederalSpecific = document.getElementById('reintegro-federal-detalle-specific');
+  const reintegroEstatalSpecific = document.getElementById('reintegro-estatal-detalle-specific');
+  
+  // Captura SIAPSEP Condicional
+  const siapsepAltaCambioCapture = document.getElementById('siapsep-alta-cambio-capture');
+  const siapsepBajaReintegroNote = document.getElementById('siapsep-baja-reintegro-note');
+
+
+  // Mapeo para títulos y tags
+  const mapeoProcesos = {
+    'alta': { titulo: 'Registro de Alta de Pensión / Juicio Mercantil', tag: 'Alta', color: '#34d399', background: '#065f46' },
+    'cambio': { titulo: 'Registro de Cambio de Pensión / Juicio Mercantil', tag: 'Cambio', color: '#fbbf24', background: '#92400e' },
+    'baja': { titulo: 'Registro de Baja de Pensión / Juicio Mercantil', tag: 'Baja', color: '#ef4444', background: '#7f1d1d' },
+    'reintegro': { titulo: 'Registro de Reintegro de Pensión / Juicio Mercantil', tag: 'Reintegro', color: '#60a5fa', background: '#1e3a8a' },
+  };
+
+  // Función principal para mostrar el proceso seleccionado
+  function actualizarMovimiento() {
+    const valor = tipoMovimientoSelect.value;
+    const datos = mapeoProcesos[valor];
+
+    // 1. Actualiza Título y Tag (Siempre visibles)
+    tituloPrincipal.textContent = datos.titulo;
+    tagMovimiento.textContent = 'Movimiento seleccionado: ' + datos.tag;
+    tagMovimiento.style.backgroundColor = datos.color;
+    tagMovimiento.style.color = datos.background;
+    tituloDetallesEspecificos.textContent = `3.1. Detalles Específicos del Proceso ${datos.tag.charAt(0)}: ${datos.tag}`;
+
+    // 2. Controla la visibilidad de los 4 contenedores de detalle específico (Mutuamente Excluyente)
+    detalleCards.forEach(card => {
+      card.classList.remove('active');
+    });
+    document.getElementById(valor + '-details').classList.add('active');
+
+    // 3. Controla la visibilidad del formulario de captura SIAPSEP
+    if (valor === 'alta' || valor === 'cambio') {
+        siapsepAltaCambioCapture.style.display = 'block';
+        siapsepBajaReintegroNote.style.display = 'none';
+    } else {
+        siapsepAltaCambioCapture.style.display = 'none';
+        siapsepBajaReintegroNote.style.display = 'block';
+    }
+
+    // 4. Lógica condicional de sub-apartados (Se ejecuta solo si es relevante)
+    if (valor === 'alta') {
+        actualizarJuicioMercantilAlta();
+    } else if (valor === 'reintegro') {
+        actualizarReintegroDetalle();
+    }
+  }
+
+  // Lógica de visibilidad Juicio Mercantil/Retroactivo (Solo dentro de la vista ALTA)
+  function actualizarJuicioMercantilAlta() {
+    // Si el proceso es Alta, este control dinámico funciona.
+    if (tipoMovimientoSelect.value === 'alta') {
+        if (tipoTramiteGeneral.value === 'juicio') {
+            juicioMercantilCardSpecific.style.display = 'block';
+            cardRetroactivoAltaSpecific.style.display = 'none';
+        } else {
+            juicioMercantilCardSpecific.style.display = 'none';
+            cardRetroactivoAltaSpecific.style.display = 'block';
+        }
+    }
+  }
+  
+  // Lógica de visibilidad detalles de Reintegro (Solo dentro de la vista REINTEGRO)
+  function actualizarReintegroDetalle() {
+      // Si el proceso es Reintegro, este control dinámico funciona.
+      if (tipoMovimientoSelect.value === 'reintegro') {
+          if (sostenimientoReintegro.value === 'federal') {
+              reintegroFederalSpecific.style.display = 'block';
+              reintegroEstatalSpecific.style.display = 'none';
+          } else {
+              reintegroFederalSpecific.style.display = 'none';
+              reintegroEstatalSpecific.style.display = 'block';
+          }
+      }
+  }
+
+
+  // Event Listeners
+  tipoMovimientoSelect.addEventListener('change', actualizarMovimiento);
+  
+  if (tipoTramiteGeneral) {
+      tipoTramiteGeneral.addEventListener('change', actualizarJuicioMercantilAlta);
+  }
+  
+  if (sostenimientoReintegro) {
+      sostenimientoReintegro.addEventListener('change', actualizarReintegroDetalle);
+  }
+
+  // Inicializar el formulario con la vista de Alta
+  actualizarMovimiento(); 
+</script>
+</body>
+</html>

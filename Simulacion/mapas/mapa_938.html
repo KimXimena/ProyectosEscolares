@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4a36eab02528daf8dbb44223f0f0e321 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_4a36eab02528daf8dbb44223f0f0e321" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_4a36eab02528daf8dbb44223f0f0e321 = L.map(
+                "map_4a36eab02528daf8dbb44223f0f0e321",
+                {
+                    center: [25.601944444444, -103.3436111111],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 2,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_bdc34d8950eb053641b204a40104d894 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_bdc34d8950eb053641b204a40104d894.addTo(map_4a36eab02528daf8dbb44223f0f0e321);
+        
+    
+            var marker_7675fb3e5441bcafec7eda8065b59ea2 = L.marker(
+                [25.601944444444, -103.3436111111],
+                {
+}
+            ).addTo(map_4a36eab02528daf8dbb44223f0f0e321);
+        
+    
+            var icon_aa25da2fd9e7b07a2b58bcd53b88aa62 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fbae5b8c8f7250767abab511f77065a4 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fee49c46e8731aa971a8e2e58f045793 = $(`<div id="html_fee49c46e8731aa971a8e2e58f045793" style="width: 100.0%; height: 100.0%;">Edificio<br>CP: 0<br>Distancia: 11343.31 km</div>`)[0];
+                popup_fbae5b8c8f7250767abab511f77065a4.setContent(html_fee49c46e8731aa971a8e2e58f045793);
+            
+        
+
+        marker_7675fb3e5441bcafec7eda8065b59ea2.bindPopup(popup_fbae5b8c8f7250767abab511f77065a4)
+        ;
+
+        
+    
+    
+                marker_7675fb3e5441bcafec7eda8065b59ea2.setIcon(icon_aa25da2fd9e7b07a2b58bcd53b88aa62);
+            
+    
+            var marker_3e72fc2745b343045c2b27134eb401a3 = L.marker(
+                [0.0, 0.0],
+                {
+}
+            ).addTo(map_4a36eab02528daf8dbb44223f0f0e321);
+        
+    
+            var icon_46f50b28a1c446737d8b0be3f761a06d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7cc82dec34de3d8562ebdd82cdae1ccf = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_00f5ac45afbee7f98551c9f3a9faffc4 = $(`<div id="html_00f5ac45afbee7f98551c9f3a9faffc4" style="width: 100.0%; height: 100.0%;">CP/Colonia<br>CP: 0<br>Distancia: 11343.31 km</div>`)[0];
+                popup_7cc82dec34de3d8562ebdd82cdae1ccf.setContent(html_00f5ac45afbee7f98551c9f3a9faffc4);
+            
+        
+
+        marker_3e72fc2745b343045c2b27134eb401a3.bindPopup(popup_7cc82dec34de3d8562ebdd82cdae1ccf)
+        ;
+
+        
+    
+    
+                marker_3e72fc2745b343045c2b27134eb401a3.setIcon(icon_46f50b28a1c446737d8b0be3f761a06d);
+            
+    
+            var poly_line_aea88000d6c838c2332b9865d6b967f2 = L.polyline(
+                [[25.601944444444, -103.3436111111], [0.0, 0.0]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_4a36eab02528daf8dbb44223f0f0e321);
+        
+    
+            poly_line_aea88000d6c838c2332b9865d6b967f2.bindTooltip(
+                `<div>
+                     Distancia: 11343.31 km
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+</script>
+</html>

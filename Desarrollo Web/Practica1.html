@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Página Web</title>
+  <style>
+    body { font-family: sans-serif; margin: 30px; }
+    .form-group { margin-bottom: 15px; display: flex; align-items: flex-start; }
+    .form-group label.title { width: 100px; font-weight: bold; }
+    .radio-group { display: flex; flex-direction: column; gap: 5px; }
+    input[type="text"], input[type="email"], select, textarea { padding: 5px; font-size: 14px; }
+    textarea { width: 250px; height: 100px; }
+    button { margin-left: 100px; padding: 5px 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <form id="miFormulario">
+    
+    <div class="form-group">
+      <label class="title" for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" value="Justin Carter">
+    </div>
+
+    <div class="form-group">
+      <label class="title" for="correo">Correo</label>
+      <input type="email" id="correo" name="correo" value="justin.w.carter@gmail.com">
+    </div>
+
+    <div class="form-group">
+      <label class="title">Producto</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="producto" value="Adobe ColdFusion Builder" checked>
+          Adobe ColdFusion Builder
+        </label>
+        <label>
+          <input type="radio" name="producto" value="Adobe Flash Builder">
+          Adobe Flash Builder
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label style="margin-left: 100px;">
+        <input type="checkbox" name="notificar" checked>
+        Por favor notifícame sobre actualizaciones del producto por correo
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label class="title" for="consulta">Consulta</label>
+      <select id="consulta" name="consulta">
+        <option value="Ventas" selected>Ventas</option>
+        <option value="Soporte">Soporte</option>
+        <option value="Otro">Otro</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <span class="title"></span>
+      <textarea name="mensaje" placeholder="Cuéntanos sobre tu consulta..."></textarea>
+    </div>
+
+    <button type="submit">Guardar</button>
+
+  </form>
+
+  <script>
+    const formulario = document.getElementById('miFormulario');
+
+    formulario.addEventListener('submit', function(e) {
+      e.preventDefault(); // para que la página no se recargue
+
+      const datosGuardados = {};
+      const elementos = formulario.elements;
+
+      // recorremos los elementos con un bucle
+      for (let i = 0; i < elementos.length; i++) {
+        const campo = elementos[i];
+
+        // ignoramos el botón de enviar y campos sin nombre
+        if (campo.type === 'submit' || !campo.name) continue;
+
+        //valido radio buttons y checkboxes si no estan marcados
+        if ((campo.type === 'radio' || campo.type === 'checkbox') && !campo.checked) {
+          continue;
+        }
+
+        // Guardamos el valor en el objeto
+        datosGuardados[campo.name] = campo.value;
+      }
+
+      // Guardar el objeto en LocalStorage (convertido a JSON)
+      localStorage.setItem('datosUsuario', JSON.stringify(datosGuardados));
+
+      console.log('Datos guardados con éxito:', datosGuardados);
+      alert('¡Datos guardados correctamente!');
+    });
+  </script>
+
+</body>
+</html>
